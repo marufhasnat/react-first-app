@@ -17,6 +17,12 @@ function App() {
     {name: 'Illustrator', price: '89.00$'},
     {name: 'InDesign', price: '79.00$'}
   ];
+  const [students2, setStudent] = useState([]);
+  useEffect(() => {
+    fetch('https://jsonplaceholder.typicode.com/users')
+      .then(res => res.json())
+      .then(data => setStudent(data))
+  }, []);
   return (
     <div className="App">
       <header className="App-header">
@@ -24,7 +30,11 @@ function App() {
         <Person firstName = 'Maruf' lastName = 'Hasnat'></Person>
         <Person firstName = 'Ibrahim' lastName = 'Hossain'></Person>
         <Person firstName = 'Azim' lastName = 'Ahmed'></Person>
-        <Person firstName = {students[0]} lastName = {students[1]}></Person>
+        <Person firstName={students[0]} lastName={students[1]}></Person>
+        {/* <Person fullName={students}></Person> */}
+        {
+          students.map(student => <Person fullName={student}></Person>)
+        }
         <p style={style}>Hello React! This is {person.name}</p>
         <Counter></Counter>
         <Users></Users>
@@ -40,6 +50,9 @@ function App() {
         {/* <Product product = {products[0]}></Product>
         <Product product = {products[1]}></Product>
         <Product product = {products[2]}></Product> */}
+        {
+          students2.map((student) => <Students name={student.name} key={student.id}></Students>)
+        }
       </header>
     </div>
   );
@@ -48,8 +61,8 @@ function App() {
 function Person(props) {
   return (
     <div style={{ border: '2px solid #61dafb', color: '#61dafb', padding: '10px', margin: '10px' }}>
-      <h2>Name: { props.firstName + ' ' + props.lastName}</h2>
-      <p>Student of IUBAT</p>
+      <h2>Name: {props.firstName + ' ' + props.lastName}</h2>
+      <p>Student of IUBAT {props.fullName}</p>
     </div>
   );
 }
@@ -83,7 +96,14 @@ function Counter() {
       <h1>Count: {count}</h1>
       <button onMouseMove={decreaseHandler}>Decrease</button>
       <button onClick={increaseHandler}>Increase</button>
+      <NumberCounter number={count}></NumberCounter>
     </div>
+  )
+}
+
+function NumberCounter(props) {
+  return (
+    <h4>Number Counter: {props.number}</h4>
   )
 }
 
@@ -106,5 +126,16 @@ function Users() {
     </div>
   )
 }
+
+function Students(props) {
+  const name = props.name;
+  return (
+    <div style={{ border: '2px solid #61dafb', color: '#61dafb', padding: '10px', margin: '10px' }}>
+      <h2>Name: {name}</h2>
+      <p>Student of IUBAT</p>
+    </div>
+  )
+}
+
 
 export default App;
